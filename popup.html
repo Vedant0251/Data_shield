@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    body {
+      width: 340px;
+      font-family: 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #1f2937;
+      background: #f3f4f6;
+    }
+
+    .header {
+      background: #fff;
+      padding: 16px 20px;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+    }
+
+    .header h3 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #111827;
+    }
+
+    .content {
+      padding: 20px;
+    }
+
+    /* Modern Card/Panel */
+    .panel {
+      background: #fff;
+      border-radius: 10px;
+      padding: 16px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      margin-bottom: 16px;
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .sub {
+      font-size: 12px;
+      color: #6b7280;
+      display: block;
+      margin-top: 4px;
+    }
+
+    /* iOS Style Switch */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 48px;
+      height: 26px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #e5e7eb;
+      transition: .3s;
+      border-radius: 26px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    input:checked+.slider {
+      background-color: #2563eb;
+    }
+
+    /* Primary Blue */
+    input:checked+.slider:before {
+      transform: translateX(22px);
+    }
+
+    /* Trust Panel */
+    .trust-panel {
+      background: #eff6ff;
+      border: 1px solid #dbeafe;
+    }
+
+    .trust-panel p {
+      margin: 0 0 12px 0;
+      font-size: 13px;
+      color: #1e40af;
+      font-weight: 500;
+    }
+
+    .trust-panel strong {
+      color: #1e3a8a;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
+      transition: all 0.2s;
+    }
+
+    .btn-trust {
+      background: #2563eb;
+      color: white;
+      box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+    }
+
+    .btn-trust:hover {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+    }
+
+    .btn-trust.remove {
+      background: #fff;
+      color: #dc2626;
+      border: 1px solid #fee2e2;
+      box-shadow: none;
+    }
+
+    .btn-trust.remove:hover {
+      background: #fef2f2;
+    }
+
+    .btn-options {
+      background: white;
+      color: #4b5563;
+      border: 1px solid #e5e7eb;
+      margin-top: 4px;
+    }
+
+    .btn-options:hover {
+      background: #f9fafb;
+      color: #111;
+    }
+
+    .status-badge {
+      font-size: 10px;
+      padding: 4px 8px;
+      border-radius: 12px;
+      background: #f3f4f6;
+      color: #6b7280;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .status-badge.active {
+      background: #dcfce7;
+      color: #166534;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <h3><img src="icons/icon48.png" width="24" height="24" style="border-radius: 4px;"> Data Shield</h3>
+    <span class="status-badge" id="statusBadge">Active</span>
+  </div>
+  <div class="content">
+    <div class="panel row">
+      <div>
+        <span class="label">Protection Status</span>
+        <span class="sub">Monitor sensitive inputs</span>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="globalToggle">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="panel trust-panel" id="siteControl">
+      <p>Site: <strong id="currentDomain">Loading...</strong></p>
+      <button id="toggleTrustBtn" class="btn-trust">Add to Trusted Sites</button>
+    </div>
+
+    <button id="optionsBtn" class="btn-options">Advanced Settings</button>
+  </div>
+  <script src="popup.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Shield Settings</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            padding: 40px;
+            background: #f9f9f9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 18px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        li:last-child {
+            border-bottom: none;
+        }
+
+        button.remove {
+            background: #ff4444;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button.remove:hover {
+            background: #cc0000;
+        }
+
+        .empty {
+            color: #888;
+            font-style: italic;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🛡️ Sensitive Data Shield Settings</h1>
+
+    <div class="card">
+        <h2>Trusted Sites (Whitelist)</h2>
+        <p>The extension will not run on these domains.</p>
+        <ul id="siteList">
+            <!-- List items injected here -->
+        </ul>
+    </div>
+
+    <script src="options.js"></script>
+</body>
+
+</html>
