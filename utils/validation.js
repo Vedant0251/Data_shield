@@ -12,17 +12,18 @@ const RiskLevels = {
 const Patterns = {
     // Tier 1: High Risk
     CREDIT_CARD: /\b(?:\d[ -]*?){13,19}\b/g,
-    AADHAAR: /\b\d{4}\s?\d{4}\s?\d{4}\b/g,
-    API_KEY: /\b(sk_live_[0-9a-zA-Z]{24,}|eyJ[a-zA-Z0-9_-]{10,}\.[a-zA-Z0-9_-]{10,}\.[a-zA-Z0-9_-]{10,})\b/g, // Stripe/JWT
+    AADHAAR: /\b\d{4}\s?\d{4}\s?\d{4}\b/,
+    // Google, AWS, GitHub, Stripe, Slack, JWT
+    API_KEY: /\b(?:sk_live_[0-9a-zA-Z]{24,}|eyJ[a-zA-Z0-9_-]{10,}\.[a-zA-Z0-9_-]{10,}\.[a-zA-Z0-9_-]{10,}|AIza[0-9A-Za-z\-_]{30,40}|AKIA[0-9A-Z]{16}|ghp_[a-zA-Z0-9]{36}|xox[baprs]-[a-zA-Z0-9-]{10,})\b/,
     CVV: /\b\d{3,4}\b/,
     OTP: /\b\d{4,8}\b/,
 
     // Tier 2: Medium Risk
-    EMAIL: /\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\b/g,
+    EMAIL: /\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\b/,
     // Phone: Matches (123) 456-7890, 123-456-7890, +1 123 456 7890, etc.
-    PHONE: /(?:\b\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b/g,
-    PAN: /\b[A-Z]{5}[0-9]{4}[A-Z]{1}\b/g,
-    UPI: /\b[a-zA-Z0-9.\-_]{2,}@[a-zA-Z]{2,}\b/g,
+    PHONE: /(?:\b\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b/,
+    PAN: /\b[A-Z]{5}[0-9]{4}[A-Z]{1}\b/,
+    UPI: /\b[a-zA-Z0-9.\-_]{2,}@[a-zA-Z]{2,}\b/,
 
     // Context Keywords
     HIGH_RISK_KEYWORDS: ['password', 'pwd', 'secret', 'token', 'key', 'cvv', 'cvc', 'card', 'debit', 'credit'],
@@ -90,8 +91,8 @@ function calculateRisk(value, element) {
         }
     }
 
-    // 3. Aadhaar
-    if (Patterns.AADHAAR.test(value)) {
+    // 3. Aadhaar (Check if not already identified as CC)
+    if (!detectionType && Patterns.AADHAAR.test(value)) {
         score += 75;
         detectionType = 'Aadhaar Number';
         reasons.push('Aadhaar format detected');
@@ -100,7 +101,7 @@ function calculateRisk(value, element) {
     // 4. API Keys / JWT
     if (Patterns.API_KEY.test(value)) {
         score += 85;
-        detectionType = 'API Key / Token';
+        if (!detectionType || detectionType === 'Aadhaar Number') detectionType = 'API Key / Token'; // Prioritize API Key
         reasons.push('High-entropy secret pattern detected');
     }
 
@@ -121,11 +122,11 @@ function calculateRisk(value, element) {
 
     // 7. Email & Phone (Updated to ensure detection triggers warning)
     if (Patterns.EMAIL.test(value)) {
-        score += 35; // Bumped to trigger Medium Warning
+        score += 35;
         if (!detectionType) detectionType = 'Email Address';
     }
     if (Patterns.PHONE.test(value)) {
-        score += 35; // Bumped to trigger Medium Warning
+        score += 35;
         if (!detectionType) detectionType = 'Phone Number';
     }
 
